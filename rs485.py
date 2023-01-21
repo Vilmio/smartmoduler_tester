@@ -5,6 +5,7 @@ import modbus
 import platform
 import sys
 import glob
+import serial.tools.list_ports
 
 class Com:
 
@@ -13,7 +14,7 @@ class Com:
         self.data = Data()
         self.timeout = 1
         self.baudrate = 9600
-        self.status = "Inactive"
+        self.status = False
         self.firmwareVersion = self.get_fimrwareVersion()
         self.com = "None"
         self.init_serial()
@@ -31,10 +32,11 @@ class Com:
     
     def init_serial(self):
         self.com = self.serial_ports()
-
-        self.serial = serial.Serial(self.com, self.baudrate, timeout=self.timeout)
-        self.serial.close()
-        self.serial.open()
+        if self.com is not None:
+            self.serial = serial.Serial(self.com, self.baudrate, timeout=self.timeout)
+            self.serial.close()
+            self.serial.open()
+            self.check_presence()
 
     def serial_ports(self):
         ports:list = []
@@ -63,18 +65,38 @@ class Com:
             except (OSError, serial.SerialException):
                 pass
 
-        return result[0]
+        if result:
+            return result[0]
+        return None
             
-    def updateData(self):
-        self.data.serialStatus = self.serial.isOpen()
+    def check_presence(self):
+        if sys.platform.startswith('win'):
+            myports = ['COM%s' % (i + 1) for i in range(256)]
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            myports = glob.glob('/dev/tty[A-Za-z]*')
+        elif sys.platform.startswith('darwin'):
+            myports = glob.glob('/dev/tty.*')
+        else:
+            self.status = False
+            return 
+        if self.com not in myports:
+            self.status = False
+        else:
+            self.status = True
 
-        if self.data.serialStatus == False:
+
+    def updateData(self):
+        self.check_presence()
+
+        if self.status == False:
+            self.data.serialStatus = False
             self.data.serial = "Disconnected"
             try:
                 self.init_serial()
             except Exception as e:
                 pass
             return
+        self.data.serialStatus = True
         reg:int = 5000
         length:int = 12
         try:
