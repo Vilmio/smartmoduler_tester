@@ -10,6 +10,7 @@ function updateData() {
         $("#currentL1").text((t.I1/100).toFixed(2))
         $("#currentL2").text((t.I2/100).toFixed(2))
         $("#currentL3").text((t.I3/100).toFixed(2))
+        $("#hdo").text(t.hdo)
         $("#evState").text(t.evState)
         $("#rfidCounter").text(t.rfidCounter)
         $("#rfidLength").text(t.rfidLength)

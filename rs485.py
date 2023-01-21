@@ -125,9 +125,9 @@ class Com:
         except Exception as e:
             pass
 
-        time.sleep(0.3)
+        time.sleep(0.1)
         reg = 4000
-        length = 6
+        length = 10
         try:
             readRegs = self.modbusClient.read_regs(reg, length)
             self.serial.write(readRegs)
@@ -151,6 +151,8 @@ class Com:
                 self.data.I3 = receiveData[2]-65535
             else:
                 self.data.I3 = receiveData[2]
+            
+            self.data.hdo = receiveData[9]
 
         except Exception as e:
             self.data.U1 = 0
@@ -164,11 +166,12 @@ class Com:
             self.data.rfidLength = 0
             self.data.rfidID = 0
             self.data.evseMaxCurrent = 0
+            self.hdo = 0
             print(e)
         
         self.data.serial = self.com
         self.data.serialStatus = self.serial.isOpen()
-        time.sleep(0.3)
+        time.sleep(0.1)
     
 
 class Data:
@@ -186,3 +189,4 @@ class Data:
         self.evseMaxCurrent = 0
         self.serial = "None"
         self.serialStatus = False
+        self.hdo = 0
