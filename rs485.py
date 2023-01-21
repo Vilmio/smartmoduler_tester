@@ -134,6 +134,7 @@ class Com:
             receiveData = self.serial.read(5+(2*length))
             receiveData = self.modbusClient.mbrtu_data_processing(receiveData)
             
+            self.data.hdo = receiveData[9]
             self.data.U1 = receiveData[3]
             self.data.U2 = receiveData[4]
             self.data.U3 = receiveData[5]
@@ -152,7 +153,7 @@ class Com:
             else:
                 self.data.I3 = receiveData[2]
             
-            self.data.hdo = receiveData[9]
+            
 
         except Exception as e:
             self.data.U1 = 0
@@ -166,7 +167,7 @@ class Com:
             self.data.rfidLength = 0
             self.data.rfidID = 0
             self.data.evseMaxCurrent = 0
-            self.hdo = 0
+            self.data.hdo = 0
             print(e)
         
         self.data.serial = self.com
