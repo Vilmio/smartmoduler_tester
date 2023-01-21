@@ -66,6 +66,15 @@ class Com:
         return result[0]
             
     def updateData(self):
+        self.data.serialStatus = self.serial.isOpen()
+
+        if self.data.serialStatus == False:
+            self.data.serial = "Disconnected"
+            try:
+                self.init_serial()
+            except Exception as e:
+                pass
+            return
         reg:int = 5000
         length:int = 12
         try:
