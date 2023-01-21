@@ -17,7 +17,6 @@ class Com:
         self.status = False
         self.firmwareVersion = self.get_fimrwareVersion()
         self.com = "None"
-        self.init_serial()
         self.modbusClient = modbus.Modbus()
 
 
@@ -137,7 +136,7 @@ class Com:
         except Exception as e:
             pass
 
-        time.sleep(0.1)
+        time.sleep(0.2)
         reg = 4000
         length = 10
         try:
@@ -165,8 +164,6 @@ class Com:
             else:
                 self.data.I3 = receiveData[2]
             
-            
-
         except Exception as e:
             self.data.U1 = 0
             self.data.U2 = 0
@@ -181,10 +178,7 @@ class Com:
             self.data.evseMaxCurrent = 0
             self.data.hdo = 0
             print(e)
-        
-        self.data.serial = self.com
-        self.data.serialStatus = self.serial.isOpen()
-        time.sleep(0.1)
+
     
 
 class Data:

@@ -27,9 +27,20 @@ def overview():
 @app.route('/updateData')
 def updateData():
     rs485.updateData()
-    datalayer = {'U1':rs485.data.U1,'U2':rs485.data.U2,'U3':rs485.data.U3,'I1':rs485.data.I1,'I2':rs485.data.I2,'I3':rs485.data.I3,'evState':rs485.data.evState,
-                'rfidCounter':rs485.data.rfidCounter,'rfidLength':rs485.data.rfidLength,'rfidID':rs485.data.rfidID,'evseMaxCurrent':rs485.data.evseMaxCurrent,
-                'serial':rs485.data.serial,'serialStatus':rs485.data.serialStatus,'hdo':rs485.data.hdo}
+    datalayer = {'U1':rs485.data.U1,
+                'U2':rs485.data.U2,
+                'U3':rs485.data.U3,
+                'I1':rs485.data.I1,
+                'I2':rs485.data.I2,
+                'I3':rs485.data.I3,
+                'evState':rs485.data.evState,
+                'rfidCounter':rs485.data.rfidCounter,
+                'rfidLength':rs485.data.rfidLength,
+                'rfidID':rs485.data.rfidID,
+                'evseMaxCurrent':rs485.data.evseMaxCurrent,
+                'serial':rs485.data.serial,
+                'serialStatus':rs485.data.serialStatus,
+                'hdo':rs485.data.hdo}
     response = app.response_class(
         response =json.dumps(datalayer),
         status=200,
