@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=test
-WorkingDirectory=/home/test/
-ExecStart=/home/test/smartmodule_tester/start.sh
+WorkingDirectory=/home/test/smartmoduler_tester/
+ExecStart=/home/test/smartmoduler_tester/start.sh
 Restart=always
 
 [Install]
