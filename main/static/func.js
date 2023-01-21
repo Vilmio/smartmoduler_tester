@@ -23,13 +23,8 @@ function updateData() {
             $("#serial").text(t.serial)
             $("#serial").css("color","red")
         }
-        if(rgb2hex($("#state").css("color")) === "#9acd32"){
-            $("#state").css("color","red")
-            $("#state").text("Reading ...")
-        }else{
-            $("#state").css("color","#9acd32")
-            $("#state").text("Reading OK")
-        }
+        $("#state").css("color","#9acd32")
+        $("#state").text("Reading OK")
     })
 }
 
@@ -50,6 +45,8 @@ $(function () {
         });
         setInterval(function () {
             $.ajax({ url: "/updateData" }).done(function (t) {
+                $("#state").css("color","red")
+                $("#state").text("Reading ...")
                 updateData(t)
             });
         }, 2e3);

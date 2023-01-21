@@ -3,6 +3,8 @@ import os
 import serial
 import modbus
 import platform
+import sys
+import glob
 
 class Com:
 
@@ -28,15 +30,40 @@ class Com:
         return "0.0"
     
     def init_serial(self):
-        if (platform.system() == "Darwin"):
-            self.com = "/dev/tty.usbserial-2120"
-        elif (platform.system() == "Windows"):
-            self.com = "/dev/tty.usbserial-2120"
-        else:
-            self.com = "/dev/tty.usbserial-2120"
+        self.com = self.serial_ports()
+
         self.serial = serial.Serial(self.com, self.baudrate, timeout=self.timeout)
         self.serial.close()
         self.serial.open()
+
+    def serial_ports(self):
+        ports:list = []
+        if sys.platform.startswith('win'):
+            port = ['COM%s' % (i + 1) for i in range(256)]
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            # this excludes your current terminal "/dev/tty"
+            port = glob.glob('/dev/tty[A-Za-z]*')
+            for p in port:
+                if "USB" in p:
+                    ports.append(p)
+        elif sys.platform.startswith('darwin'):
+            port = glob.glob('/dev/tty.*')
+            for p in port:
+                if "usbserial" in p:
+                    ports.append(p)
+        else:
+            raise EnvironmentError('Unsupported platform')
+
+        result = []
+        for port in ports:
+            try:
+                s = serial.Serial(port)
+                s.close()
+                result.append(port)
+            except (OSError, serial.SerialException):
+                pass
+
+        return result[0]
             
     def updateData(self):
         reg:int = 5000
@@ -93,7 +120,7 @@ class Com:
                 self.data.I3 = receiveData[2]-65535
             else:
                 self.data.I3 = receiveData[2]
-                
+
         except Exception as e:
             self.data.U1 = 0
             self.data.U2 = 0
