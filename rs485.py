@@ -95,6 +95,18 @@ class Com:
                 self.init_serial()
             except Exception as e:
                 pass
+            self.data.U1 = 0
+            self.data.U2 = 0
+            self.data.U3 = 0
+            self.data.I1 = 0
+            self.data.I2 = 0
+            self.data.I3 = 0
+            self.data.evState = "COMM ERROR"
+            self.data.rfidCounter = 0
+            self.data.rfidLength = 0
+            self.data.rfidID = 0
+            self.data.evseMaxCurrent = 0
+            self.data.hdo = 0
             return
         self.data.serialStatus = True
         reg:int = 5000
