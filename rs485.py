@@ -138,7 +138,7 @@ class Com:
         except Exception as e:
             pass
 
-        time.sleep(0.2)
+        time.sleep(0.5)
         reg = 4000
         length = 10
         try:
