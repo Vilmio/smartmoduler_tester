@@ -138,7 +138,7 @@ class Com:
         except Exception as e:
             pass
 
-        time.sleep(0.5)
+        time.sleep(0.3)
         reg = 4000
         length = 10
         try:
@@ -169,6 +169,7 @@ class Com:
         except Exception as e:
             print(e)
 
+        time.sleep(0.3)
     
 
 class Data:
