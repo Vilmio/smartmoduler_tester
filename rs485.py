@@ -78,10 +78,10 @@ class Com:
         else:
             self.status = False
             return 
-        if self.com not in myports:
-            self.status = False
-        else:
+        if self.com in myports:
             self.status = True
+        else:
+            self.status = False
 
 
     def updateData(self):
@@ -107,6 +107,8 @@ class Com:
             self.data.evseMaxCurrent = 0
             self.data.hdo = 0
             return
+
+        self.data.serial = "Connected"
         self.data.serialStatus = True
         reg:int = 5000
         length:int = 12
@@ -165,18 +167,6 @@ class Com:
                 self.data.I3 = receiveData[2]
             
         except Exception as e:
-            self.data.U1 = 0
-            self.data.U2 = 0
-            self.data.U3 = 0
-            self.data.I1 = 0
-            self.data.I2 = 0
-            self.data.I3 = 0
-            self.data.evState = "COMM ERROR"
-            self.data.rfidCounter = 0
-            self.data.rfidLength = 0
-            self.data.rfidID = 0
-            self.data.evseMaxCurrent = 0
-            self.data.hdo = 0
             print(e)
 
     
